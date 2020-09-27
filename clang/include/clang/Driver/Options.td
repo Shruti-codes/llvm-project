@@ -1339,6 +1339,17 @@ def fxray_instrumentation_bundle :
   Group<f_Group>, Flags<[CC1Option]>,
   HelpText<"Select which XRay instrumentation points to emit. Options: all, none, function-entry, function-exit, function, custom. Default is 'all'.  'function' includes both 'function-entry' and 'function-exit'.">;
 
+def fxray_function_groups :
+  Joined<["-"], "fxray-function-groups=">,
+  Group<f_Group>, Flags<[CC1Option]>,
+  HelpText<"Only instrument 1 of N groups">;
+
+def fxray_selected_function_group :
+  Joined<["-"], "fxray-selected-function-group=">,
+  Group<f_Group>, Flags<[CC1Option]>,
+  HelpText<"When using -fxray-function-groups, select which group of functions to instrument. Valid range is 0 to fxray-function-groups - 1">;
+
+
 def ffine_grained_bitfield_accesses : Flag<["-"],
   "ffine-grained-bitfield-accesses">, Group<f_clang_Group>, Flags<[CC1Option]>,
   HelpText<"Use separate accesses for consecutive bitfield runs with legal widths and alignments.">;
@@ -1996,6 +2007,9 @@ defm unique_internal_linkage_names : OptInFFlag<"unique-internal-linkage-names",
 defm unique_section_names : OptOutFFlag<"unique-section-names",
   "", "Don't use unique names for text and data sections">;
 
+defm split_machine_functions: OptInFFlag<"split-machine-functions",
+  "Enable", "Disable", " late function splitting using profile information (x86 ELF)">;
+
 defm strict_return : OptOutFFlag<"strict-return", "",
   "Don't treat control flow paths that fall off the end of a non-void function as unreachable">;
 
@@ -2382,6 +2396,9 @@ def mfix_cortex_a53_835769 : Flag<["-"], "mfix-cortex-a53-835769">,
 def mno_fix_cortex_a53_835769 : Flag<["-"], "mno-fix-cortex-a53-835769">,
   Group<m_aarch64_Features_Group>,
   HelpText<"Don't workaround Cortex-A53 erratum 835769 (AArch64 only)">;
+def mmark_bti_property : Flag<["-"], "mmark-bti-property">,
+  Group<m_aarch64_Features_Group>,
+  HelpText<"Add .note.gnu.property with BTI to assembly files (AArch64 only)">;
 foreach i = {1-31} in
   def ffixed_x#i : Flag<["-"], "ffixed-x"#i>, Group<m_Group>,
     HelpText<"Reserve the x"#i#" register (AArch64/RISC-V only)">;

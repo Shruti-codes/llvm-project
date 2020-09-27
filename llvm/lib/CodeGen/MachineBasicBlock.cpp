@@ -828,7 +828,7 @@ void MachineBasicBlock::replaceSuccessor(MachineBasicBlock *Old,
 
 void MachineBasicBlock::copySuccessor(MachineBasicBlock *Orig,
                                       succ_iterator I) {
-  if (Orig->Probs.empty())
+  if (!Orig->Probs.empty())
     addSuccessor(*I, Orig->getSuccProbability(I));
   else
     addSuccessorWithoutProb(*I);
@@ -942,6 +942,46 @@ MachineBasicBlock *MachineBasicBlock::getFallThrough() {
 
 bool MachineBasicBlock::canFallThrough() {
   return getFallThrough() != nullptr;
+}
+
+MachineBasicBlock *MachineBasicBlock::splitAt(MachineInstr &MI,
+                                              bool UpdateLiveIns,
+                                              LiveIntervals *LIS) {
+  MachineBasicBlock::iterator SplitPoint(&MI);
+  ++SplitPoint;
+
+  if (SplitPoint == end()) {
+    // Don't bother with a new block.
+    return this;
+  }
+
+  MachineFunction *MF = getParent();
+
+  LivePhysRegs LiveRegs;
+  if (UpdateLiveIns) {
+    // Make sure we add any physregs we define in the block as liveins to the
+    // new block.
+    LiveRegs.init(*MF->getSubtarget().getRegisterInfo());
+    LiveRegs.addLiveOuts(*this);
+    for (auto I = rbegin(), E = SplitPoint.getReverse(); I != E; ++I)
+      LiveRegs.stepBackward(*I);
+  }
+
+  MachineBasicBlock *SplitBB = MF->CreateMachineBasicBlock(getBasicBlock());
+
+  MF->insert(++MachineFunction::iterator(this), SplitBB);
+  SplitBB->splice(SplitBB->begin(), this, SplitPoint, end());
+
+  SplitBB->transferSuccessorsAndUpdatePHIs(this);
+  addSuccessor(SplitBB);
+
+  if (UpdateLiveIns)
+    addLiveIns(*SplitBB, LiveRegs);
+
+  if (LIS)
+    LIS->insertMBBInMaps(SplitBB, &MI);
+
+  return SplitBB;
 }
 
 MachineBasicBlock *MachineBasicBlock::SplitCriticalEdge(
