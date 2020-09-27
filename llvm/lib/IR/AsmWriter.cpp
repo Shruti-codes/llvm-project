@@ -440,7 +440,7 @@ static void PrintLLVMName(raw_ostream &OS, StringRef Name, PrefixType Prefix) {
   case NoPrefix:
     break;
   case GlobalPrefix:
-    OS << '@';
+    OS << "@";
     break;
   case ComdatPrefix:
     OS << '$';
@@ -2688,7 +2688,10 @@ void AssemblyWriter::printModule(const Module *M) {
       // Don't print the ID if it will start a new line (which would
       // require a comment char before it).
       M->getModuleIdentifier().find('\n') == std::string::npos)
+  {
     Out << "; ModuleID = '" << M->getModuleIdentifier() << "'\n";
+     Out << "Just the beginning of IR errrr !" << "\n";
+   }
 
   if (!M->getSourceFileName().empty()) {
     Out << "source_filename = \"";
@@ -2718,7 +2721,6 @@ void AssemblyWriter::printModule(const Module *M) {
       Out << "\"\n";
     } while (!Asm.empty());
   }
-
   printTypeIdentities();
 
   // Output all comdats.
@@ -3336,6 +3338,7 @@ void AssemblyWriter::printNamedMDNode(const NamedMDNode *NMD) {
       Out << '!' << Slot;
   }
   Out << "}\n";
+  Out << "Finally the end :)" << "\n";
 }
 
 static void PrintVisibility(GlobalValue::VisibilityTypes Vis,
@@ -3434,7 +3437,7 @@ void AssemblyWriter::printGlobal(const GlobalVariable *GV) {
   if (unsigned AddressSpace = GV->getType()->getAddressSpace())
     Out << "addrspace(" << AddressSpace << ") ";
   if (GV->isExternallyInitialized()) Out << "externally_initialized ";
-  Out << (GV->isConstant() ? "constant " : "global ");
+  Out << (GV->isConstant() ? "constant " : "global");
   TypePrinter.print(GV->getValueType(), Out);
 
   if (GV->hasInitializer()) {
@@ -3811,7 +3814,7 @@ void AssemblyWriter::printInstruction(const Instruction &I) {
   if (AnnotationWriter) AnnotationWriter->emitInstructionAnnot(&I, Out);
 
   // Print out indentation for an instruction.
-  Out << "  ";
+  Out << " ";
 
   // Print out name if it exists...
   if (I.hasName()) {

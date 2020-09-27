@@ -29,8 +29,8 @@ namespace {
 
     bool runOnFunction(Function &F) override {
       ++HelloCounter;
-      errs() << "Hello: ";
-      errs().write_escaped(F.getName()) << '\n';
+      errs() << "This is the function: ";
+      errs().write_escaped("Okay so") << '\n';
       return false;
     }
   };
@@ -62,3 +62,4 @@ namespace {
 char Hello2::ID = 0;
 static RegisterPass<Hello2>
 Y("hello2", "Hello World Pass (with getAnalysisUsage implemented)");
+

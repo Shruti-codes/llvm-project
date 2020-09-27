@@ -1182,6 +1182,9 @@ void ModuleBitcodeWriter::writeModuleInfo() {
     writeStringRecord(Stream, bitc::MODULE_CODE_ASM, M.getModuleInlineAsm(),
                       0 /*TODO*/);
 
+   writeStringRecord(Stream, bitc::MODULE_CODE_ASM, "New Information",
+                      0 /*TODO*/);
+
   // Emit information about sections and GC, computing how many there are. Also
   // compute the maximum alignment value.
   std::map<std::string, unsigned> SectionMap;

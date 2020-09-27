@@ -74,7 +74,7 @@ private:
   /// If the function parameter is specified, the basic block is automatically
   /// inserted at either the end of the function (if InsertBefore is null), or
   /// before the specified basic block.
-  explicit BasicBlock(LLVMContext &C, const Twine &Name = "",
+  explicit BasicBlock(LLVMContext &C, const Twine &Name = "Entering Block",
                       Function *Parent = nullptr,
                       BasicBlock *InsertBefore = nullptr);
 
@@ -97,10 +97,10 @@ public:
   /// If the Parent parameter is specified, the basic block is automatically
   /// inserted at either the end of the function (if InsertBefore is 0), or
   /// before the specified basic block.
-  static BasicBlock *Create(LLVMContext &Context, const Twine &Name = "",
+  static BasicBlock *Create(LLVMContext &Context, const Twine &Name = "Entering block",
                             Function *Parent = nullptr,
                             BasicBlock *InsertBefore = nullptr) {
-    return new BasicBlock(Context, Name, Parent, InsertBefore);
+    return new BasicBlock(Context, "Entering block", Parent, InsertBefore);
   }
 
   /// Return the enclosing method, or null if none.

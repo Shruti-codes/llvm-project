@@ -34,6 +34,7 @@
 #include <cstdint>
 #include <vector>
 
+
 using namespace llvm;
 
 /// CreateGlobalString - Make a new global variable with an initializer that
@@ -49,9 +50,10 @@ GlobalVariable *IRBuilderBase::CreateGlobalString(StringRef Str,
     M = BB->getParent()->getParent();
   auto *GV = new GlobalVariable(
       *M, StrConstant->getType(), true, GlobalValue::PrivateLinkage,
-      StrConstant, Name, nullptr, GlobalVariable::NotThreadLocal, AddressSpace);
+      StrConstant, "A global variable", nullptr, GlobalVariable::NotThreadLocal, AddressSpace);
   GV->setUnnamedAddr(GlobalValue::UnnamedAddr::Global);
   GV->setAlignment(Align(1));
+  
   return GV;
 }
 

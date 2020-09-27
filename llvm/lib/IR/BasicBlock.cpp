@@ -394,7 +394,7 @@ BasicBlock *BasicBlock::splitBasicBlock(iterator I, const Twine &BBName) {
   assert(I != InstList.end() &&
          "Trying to get me to create degenerate basic block!");
 
-  BasicBlock *New = BasicBlock::Create(getContext(), BBName, getParent(),
+  BasicBlock *New = BasicBlock::Create(getContext(), "New Block", getParent(),
                                        this->getNextNode());
 
   // Save DebugLoc of split point before invalidating iterator.

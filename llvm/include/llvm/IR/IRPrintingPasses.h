@@ -28,7 +28,7 @@ class StringRef;
 /// Create and return a pass that writes the module to the specified
 /// \c raw_ostream.
 ModulePass *createPrintModulePass(raw_ostream &OS,
-                                  const std::string &Banner = "",
+                                  const std::string &Banner = "New Pass",
                                   bool ShouldPreserveUseListOrder = false);
 
 /// Create and return a pass that prints functions to the specified
