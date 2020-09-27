@@ -50,7 +50,7 @@ GlobalVariable *IRBuilderBase::CreateGlobalString(StringRef Str,
     M = BB->getParent()->getParent();
   auto *GV = new GlobalVariable(
       *M, StrConstant->getType(), true, GlobalValue::PrivateLinkage,
-      StrConstant, "A global variable", nullptr, GlobalVariable::NotThreadLocal, AddressSpace);
+      StrConstant, Name, nullptr, GlobalVariable::NotThreadLocal, AddressSpace);
   GV->setUnnamedAddr(GlobalValue::UnnamedAddr::Global);
   GV->setAlignment(Align(1));
   

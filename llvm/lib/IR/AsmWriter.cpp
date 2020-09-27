@@ -440,7 +440,7 @@ static void PrintLLVMName(raw_ostream &OS, StringRef Name, PrefixType Prefix) {
   case NoPrefix:
     break;
   case GlobalPrefix:
-    OS << "@";
+    OS << '@';
     break;
   case ComdatPrefix:
     OS << '$';
@@ -3437,7 +3437,7 @@ void AssemblyWriter::printGlobal(const GlobalVariable *GV) {
   if (unsigned AddressSpace = GV->getType()->getAddressSpace())
     Out << "addrspace(" << AddressSpace << ") ";
   if (GV->isExternallyInitialized()) Out << "externally_initialized ";
-  Out << (GV->isConstant() ? "constant " : "global");
+  Out << (GV->isConstant() ? "constant " : "global ");
   TypePrinter.print(GV->getValueType(), Out);
 
   if (GV->hasInitializer()) {
@@ -3814,7 +3814,7 @@ void AssemblyWriter::printInstruction(const Instruction &I) {
   if (AnnotationWriter) AnnotationWriter->emitInstructionAnnot(&I, Out);
 
   // Print out indentation for an instruction.
-  Out << " ";
+  Out << "  ";
 
   // Print out name if it exists...
   if (I.hasName()) {
