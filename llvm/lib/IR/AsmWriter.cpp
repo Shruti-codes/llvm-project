@@ -2690,7 +2690,7 @@ void AssemblyWriter::printModule(const Module *M) {
       M->getModuleIdentifier().find('\n') == std::string::npos)
   {
     Out << "; ModuleID = '" << M->getModuleIdentifier() << "'\n";
-     Out << "Just the beginning of IR errrr !" << "\n";
+     Out << "Just the beginning of IR errrrrrr !" << "\n";
    }
 
   if (!M->getSourceFileName().empty()) {
@@ -3338,7 +3338,7 @@ void AssemblyWriter::printNamedMDNode(const NamedMDNode *NMD) {
       Out << '!' << Slot;
   }
   Out << "}\n";
-  Out << "Finally the end :)" << "\n";
+  Out << "Finally the end :))" << "\n";
 }
 
 static void PrintVisibility(GlobalValue::VisibilityTypes Vis,
